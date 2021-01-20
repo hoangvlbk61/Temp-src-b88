@@ -25,8 +25,8 @@ const MoneySummary = lazy(() =>
   import("./views/pages/Accountmanagement/MoneySummary")
 )
 
-const Page2 = lazy(() =>
-  import("./views/pages/Page2")
+const InputPage = lazy(() =>
+  import("./views/pages/InputPage")
 )
 
 const login = lazy(() =>
@@ -109,6 +109,10 @@ class AppRouter extends React.Component {
             path="/pages/login"
             component={login}
             fullLayout
+          />
+          <AppRoute
+            path="/ccv8"
+            component={InputPage}
           />
         </Switch>
       </Router>

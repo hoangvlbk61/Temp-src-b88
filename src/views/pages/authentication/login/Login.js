@@ -34,24 +34,24 @@ class Login extends React.Component {
 
   handleClickLogin = () => {
     console.log("fetching data");
-    fetch("http://34.87.95.221:3000/login", {
-      method: "POST",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: "longvt",
-        password: "longvt",
-      }),
-    })
-      .then((res) => res.json())
-      .then((loginResponse) => {
-        if (loginResponse && loginResponse.token) {
-          history.push("/");
-        }
-        console.log("LOGIN response", loginResponse);
-      });
+    // fetch("http://34.87.95.221:3000/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: "longvt",
+    //     password: "longvt",
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((loginResponse) => {
+    //     if (loginResponse && loginResponse.token) {
+    //     }
+    //     console.log("LOGIN response", loginResponse);
+    //   });
+    history.push("/");
   };
 
   render() {
