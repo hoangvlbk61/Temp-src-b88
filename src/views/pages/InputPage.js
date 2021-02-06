@@ -20,6 +20,7 @@ const CCV8 = () => {
   const [result, setResult] = useState([]);
   const triggerCCV8 = () => {
     const links = data.split("\n");
+    console.log("links.length", links.length);
     setTotalLink(links.length);
     const instanceLinks = [];
     links.forEach((lk) => {
@@ -126,7 +127,7 @@ const CCV8 = () => {
         <Progress
           animated
           color="success"
-          value={`${parseFloat(result.length / totalLinks.length) * 100}`}
+          value={`${parseFloat(result.length / totalLinks) * 100}`}
           style={{ height: "16px" }}
         >
           100%
@@ -136,7 +137,7 @@ const CCV8 = () => {
           <CardBody>
             <p className="bold"> Checked </p>: {result.length}/
             {totalLinks.length} (
-            {parseFloat(result.length / totalLinks.length) * 100}%)
+            {parseFloat(totalLinks ? result.length / totalLinks : 0) * 100}%)
             <p className="bold blue"> Live</p>: {live.length}
             <p className="bold red"> Die</p>: {die.length}
             <p className="bold yellow"> UNK</p>: {unk.length}
