@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
   Button,
   CardFooter,
   CardText,
@@ -16,26 +15,28 @@ import "./style.scss";
 const CCV8 = () => {
   const [data, setData] = useState("");
   const [totalLinks, setTotalLink] = useState(0);
-  const [isProcessing, setProcessing] = useState();
+  const [isProcessing, setProcessing] = useState(false);
   const [result, setResult] = useState([]);
   const triggerCCV8 = () => {
     const links = data.split("\n");
-    console.log("links.length", links.length);
+    setData("");
+    if (links.length) setProcessing(true);
     setTotalLink(links.length);
     const instanceLinks = [];
-    links.forEach((lk) => {
-      fetch("http://localhost:5000/ccv8", {
+    links.forEach((lk, idx) => {
+      fetch("http://107.150.23.100:5000/ccv8", {
         method: "POST",
         body: JSON.stringify({
           data: lk,
         }),
         // mode: "no-cors",
         headers: {
-          'Content-Type': 'application/json',
-        }
+          "Content-Type": "application/json",
+        },
       })
         .then((res) => res.json())
         .then((res) => {
+          console.log("res", res);
           if (res.sts) {
             instanceLinks.push({
               inputData: res.inputData,
@@ -43,10 +44,10 @@ const CCV8 = () => {
             });
             setResult([...instanceLinks]);
           }
+          if (idx === links.length - 1) setProcessing(false);
         });
     });
   };
-
   const live = result
     .filter((e) => e.inputStatus.toUpperCase() === "LIVE")
     .map((e) => e.inputData);
@@ -56,7 +57,6 @@ const CCV8 = () => {
   const unk = result
     .filter((e) => e.inputStatus.toUpperCase() === "UNK")
     .map((e) => e.inputData);
-
   return (
     <div>
       <Card>
@@ -74,6 +74,7 @@ const CCV8 = () => {
             name="text"
             id="exampleText"
             onChange={(e) => setData(e.target.value)}
+            value={data}
           />
           <div style={{ margin: "16px 0px 0px" }}>
             Delim <Input style={{ width: "60px", display: "inline" }} /> Pause
@@ -91,6 +92,7 @@ const CCV8 = () => {
                 alignItems: "center",
               }}
               onClick={triggerCCV8}
+              disabled={isProcessing}
             >
               {" "}
               <Play size={16} /> Play
@@ -103,6 +105,7 @@ const CCV8 = () => {
                 display: "flex",
                 alignItems: "center",
               }}
+              disabled={!isProcessing}
             >
               {" "}
               <Pause size={16} /> Pause
